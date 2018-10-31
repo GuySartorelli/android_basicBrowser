@@ -12,32 +12,38 @@
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/app_bar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <EditText
                 android:id="@+id/location_input"
-                android:layout_width="wrap_content"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:ems="10"
-                android:hint="@string/location_input"
-                android:inputType="text|textUri" />
+                android:background="@drawable/round_textedit"
 
-            <Button
-                android:id="@+id/browse_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/browse" />
+                android:drawableStart="@drawable/ic_search_black_24dp"
+                android:drawableLeft="@drawable/ic_search_black_24dp"
+                android:ems="10"
+                android:hint="@string/location_input_short"
+                android:imeOptions="actionGo"
+                android:inputType="text|textUri"
+
+                android:paddingStart="8dp"
+                android:paddingLeft="8dp"
+                android:paddingEnd="8dp"
+                android:paddingRight="8dp"
+                android:textColor="?android:attr/colorForeground" />
 
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/content_main" />
+
 
 </android.support.design.widget.CoordinatorLayout>

@@ -2,6 +2,7 @@ package com.example.rallion.basicbrowser;
 
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -17,15 +18,15 @@ class LayoutController {
 
     void setupBrowserLayout(){
         activity.setContentView(R.layout.activity_main);
-        Toolbar toolbar = activity.findViewById(R.id.toolbar);
+        Toolbar toolbar = activity.findViewById(R.id.app_bar);
         activity.setSupportActionBar(toolbar);
 
-        EditText locationInput = activity.findViewById(R.id.location_input);
         WebView webView = activity.findViewById(R.id.web_view);
         webView.setWebViewClient(new WebViewClient());
-        Button browseBtn = activity.findViewById(R.id.browse_btn);
-        browseBtn.setOnClickListener((view) -> {
-            webView.loadUrl(locationInput.getText().toString());
+        EditText locationInput = activity.findViewById(R.id.location_input);
+        locationInput.setOnEditorActionListener((view, actionId, event) -> {
+            webView.loadUrl(URLParser.parse(locationInput.getText().toString()));
+            return true;
         });
 
     }
