@@ -4,13 +4,14 @@ import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.webkit.CookieManager;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.EditText;
 
 class LayoutController {
 
     private AppCompatActivity activity;
+    private EditText locationInput;
 
     LayoutController(AppCompatActivity activity) {
         this.activity = activity;
@@ -22,7 +23,8 @@ class LayoutController {
         activity.setSupportActionBar(toolbar);
 
         WebView webView = activity.findViewById(R.id.web_view);
-        webView.setWebViewClient(new WebViewClient());
+        webView.setWebViewClient(new BasicBrowserWebViewClient(this));
+//        webView.setWebChromeClient(new WebChromeClient());
         webView.getSettings().setJavaScriptEnabled(true);
         if(Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
             CookieManager.getInstance().setAcceptThirdPartyCookies(webView, true);
@@ -30,11 +32,31 @@ class LayoutController {
             CookieManager.getInstance().setAcceptCookie(true);
         }
 
-        EditText locationInput = activity.findViewById(R.id.location_input);
+        locationInput = activity.findViewById(R.id.location_input);
         locationInput.setOnEditorActionListener((view, actionId, event) -> {
             webView.loadUrl(URLParser.parse(locationInput.getText().toString()));
             return true;
         });
+    }
 
+    void setLocation(String url){
+        locationInput.setText(url);
+
+        if (url.startsWith("https://")){
+            if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                locationInput.setCompoundDrawablesRelativeWithIntrinsicBounds(activity.getResources().getDrawable(R.drawable.secure), null, null, null);
+            }
+            locationInput.setCompoundDrawablesWithIntrinsicBounds(activity.getResources().getDrawable(R.drawable.secure), null, null, null);
+        } else if (url.startsWith("http://")){
+            if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                locationInput.setCompoundDrawablesRelativeWithIntrinsicBounds(activity.getResources().getDrawable(R.drawable.insecure), null, null, null);
+            }
+            locationInput.setCompoundDrawablesWithIntrinsicBounds(activity.getResources().getDrawable(R.drawable.insecure), null, null, null);
+        } else {
+            if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                locationInput.setCompoundDrawablesRelativeWithIntrinsicBounds(activity.getResources().getDrawable(R.drawable.error), null, null, null);
+            }
+            locationInput.setCompoundDrawablesWithIntrinsicBounds(activity.getResources().getDrawable(R.drawable.error), null, null, null);
+        }
     }
 }
