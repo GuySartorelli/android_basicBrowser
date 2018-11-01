@@ -1,8 +1,10 @@
 package com.example.rallion.basicbrowser;
 
+import android.content.Context;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.CookieManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -11,6 +13,7 @@ import android.widget.EditText;
 class LayoutController {
 
     private AppCompatActivity activity;
+    private WebView webView;
     private EditText locationInput;
 
     LayoutController(AppCompatActivity activity) {
@@ -22,7 +25,7 @@ class LayoutController {
         Toolbar toolbar = activity.findViewById(R.id.app_bar);
         activity.setSupportActionBar(toolbar);
 
-        WebView webView = activity.findViewById(R.id.web_view);
+        webView = activity.findViewById(R.id.web_view);
         webView.setWebViewClient(new BasicBrowserWebViewClient(this));
 //        webView.setWebChromeClient(new WebChromeClient());
         webView.getSettings().setJavaScriptEnabled(true);
@@ -35,6 +38,9 @@ class LayoutController {
         locationInput = activity.findViewById(R.id.location_input);
         locationInput.setOnEditorActionListener((view, actionId, event) -> {
             webView.loadUrl(URLParser.parse(locationInput.getText().toString()));
+            InputMethodManager keyboard = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            keyboard.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            webView.requestFocus();
             return true;
         });
     }
@@ -58,5 +64,13 @@ class LayoutController {
             }
             locationInput.setCompoundDrawablesWithIntrinsicBounds(activity.getResources().getDrawable(R.drawable.error), null, null, null);
         }
+    }
+
+    public boolean canGoBack(){
+        return webView.canGoBack();
+    }
+
+    public void goBack(){
+        if (canGoBack()) webView.goBack();
     }
 }
