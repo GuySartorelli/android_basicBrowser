@@ -48,16 +48,15 @@ class LayoutController {
         });
         locationInput.setOnFocusChangeListener((view, hasFocus) -> {
             if (hasFocus){
-                Drawable right = null;
+                Drawable right;
                 if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1) {
                     Drawable left = locationInput.getCompoundDrawablesRelative()[0];
                     right = activity.getResources().getDrawable(R.drawable.delete);
-                    locationInput.setCompoundDrawablesRelativeWithIntrinsicBounds(left, null, null, right);
+                    locationInput.setCompoundDrawablesRelativeWithIntrinsicBounds(left, null, right, null);
                 } else {
                     Drawable left = locationInput.getCompoundDrawables()[0];
                     right = activity.getResources().getDrawable(R.drawable.delete);
-                    locationInput.setCompoundDrawablesWithIntrinsicBounds(left, null, null, right);
-                    double rightWidth = right.getBounds().width();
+                    locationInput.setCompoundDrawablesWithIntrinsicBounds(left, null, right, null);
                 }
                 double rightWidth = right.getBounds().width();
                 locationInput.setOnTouchListener((v, event) -> {
@@ -67,6 +66,7 @@ class LayoutController {
                             return true;
                         }
                     }
+                    v.performClick();
                     return false;
                 });
 
@@ -109,23 +109,23 @@ class LayoutController {
         }
     }
 
-    public boolean canGoBack(){
+    boolean canGoBack(){
         return webView.canGoBack();
     }
 
-    public boolean canGoForward(){
+    boolean canGoForward(){
         return webView.canGoForward();
     }
 
-    public void goBack(){
+    void goBack(){
         if (canGoBack()) webView.goBack();
     }
 
-    public void goForward(){
+    void goForward(){
         if (canGoForward()) webView.goForward();
     }
 
-    public void refresh(){
+    void refresh(){
         webView.reload();
     }
 }
