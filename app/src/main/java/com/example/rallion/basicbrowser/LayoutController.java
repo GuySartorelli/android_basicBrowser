@@ -6,6 +6,7 @@ import android.os.Build;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -53,13 +54,14 @@ class LayoutController {
         });
         locationInput.setOnFocusChangeListener((view, hasFocus) -> {
             if (hasFocus){
+//                locationInput.selectAll();
                 Drawable right;
                 if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                    Drawable left = locationInput.getCompoundDrawablesRelative()[0];
+                    Drawable left = activity.getResources().getDrawable(R.drawable.ic_search_black_24dp); //locationInput.getCompoundDrawablesRelative()[0];
                     right = activity.getResources().getDrawable(R.drawable.delete);
                     locationInput.setCompoundDrawablesRelativeWithIntrinsicBounds(left, null, right, null);
                 } else {
-                    Drawable left = locationInput.getCompoundDrawables()[0];
+                    Drawable left = activity.getResources().getDrawable(R.drawable.ic_search_black_24dp); //locationInput.getCompoundDrawables()[0];
                     right = activity.getResources().getDrawable(R.drawable.delete);
                     locationInput.setCompoundDrawablesWithIntrinsicBounds(left, null, right, null);
                 }
@@ -75,7 +77,7 @@ class LayoutController {
                     return false;
                 });
 
-            } else setLocationDrawable(webView.getUrl()); //lost focus
+            } else setLocation(webView.getUrl()); //lost focus
         });
 
         SwipeRefreshLayout swiper = activity.findViewById(R.id.swipeContainer);
@@ -94,18 +96,21 @@ class LayoutController {
         if (url.startsWith("https://")){
             if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1) {
                 locationInput.setCompoundDrawablesRelativeWithIntrinsicBounds(activity.getResources().getDrawable(R.drawable.secure), null, null, null);
+            } else {
+                locationInput.setCompoundDrawablesWithIntrinsicBounds(activity.getResources().getDrawable(R.drawable.secure), null, null, null);
             }
-            locationInput.setCompoundDrawablesWithIntrinsicBounds(activity.getResources().getDrawable(R.drawable.secure), null, null, null);
         } else if (url.startsWith("http://")){
             if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1) {
                 locationInput.setCompoundDrawablesRelativeWithIntrinsicBounds(activity.getResources().getDrawable(R.drawable.insecure), null, null, null);
+            } else {
+                locationInput.setCompoundDrawablesWithIntrinsicBounds(activity.getResources().getDrawable(R.drawable.insecure), null, null, null);
             }
-            locationInput.setCompoundDrawablesWithIntrinsicBounds(activity.getResources().getDrawable(R.drawable.insecure), null, null, null);
         } else {
             if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1) {
                 locationInput.setCompoundDrawablesRelativeWithIntrinsicBounds(activity.getResources().getDrawable(R.drawable.error), null, null, null);
+            } else {
+                locationInput.setCompoundDrawablesWithIntrinsicBounds(activity.getResources().getDrawable(R.drawable.error), null, null, null);
             }
-            locationInput.setCompoundDrawablesWithIntrinsicBounds(activity.getResources().getDrawable(R.drawable.error), null, null, null);
         }
     }
 

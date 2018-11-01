@@ -25,6 +25,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
+                android:selectAllOnFocus="true"
                 android:background="@drawable/round_textedit"
                 android:drawableStart="@drawable/ic_search_black_24dp"
                 android:drawableLeft="@drawable/ic_search_black_24dp"
