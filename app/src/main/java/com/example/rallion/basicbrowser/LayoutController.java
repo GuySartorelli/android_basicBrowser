@@ -1,9 +1,12 @@
 package com.example.rallion.basicbrowser;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MotionEvent;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.CookieManager;
 import android.webkit.WebChromeClient;
@@ -43,6 +46,46 @@ class LayoutController {
             webView.requestFocus();
             return true;
         });
+        locationInput.setOnFocusChangeListener((view, hasFocus) -> {
+            if (hasFocus){
+                Drawable right = null;
+                if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    Drawable left = locationInput.getCompoundDrawablesRelative()[0];
+                    right = activity.getResources().getDrawable(R.drawable.delete);
+                    locationInput.setCompoundDrawablesRelativeWithIntrinsicBounds(left, null, null, right);
+                } else {
+                    Drawable left = locationInput.getCompoundDrawables()[0];
+                    right = activity.getResources().getDrawable(R.drawable.delete);
+                    locationInput.setCompoundDrawablesWithIntrinsicBounds(left, null, null, right);
+                    double rightWidth = right.getBounds().width();
+                }
+                double rightWidth = right.getBounds().width();
+                locationInput.setOnTouchListener((v, event) -> {
+                    if(event.getAction() == MotionEvent.ACTION_UP) {
+                        if(event.getRawX() >= (locationInput.getRight() - rightWidth)) {
+                            locationInput.setText("");
+                            return true;
+                        }
+                    }
+                    return false;
+                });
+
+            } else if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1) { //no focus
+                Drawable left = locationInput.getCompoundDrawablesRelative()[0];
+                locationInput.setCompoundDrawablesRelativeWithIntrinsicBounds(left, null, null, null);
+                locationInput.setOnClickListener(null);
+            } else {
+                Drawable left = locationInput.getCompoundDrawables()[0];
+                locationInput.setCompoundDrawablesWithIntrinsicBounds(left, null, null, null);
+                locationInput.setOnClickListener(null);
+            }
+        });
+
+        SwipeRefreshLayout swiper = activity.findViewById(R.id.swipeContainer);
+        swiper.setOnRefreshListener(() -> {
+            webView.reload();
+            swiper.setRefreshing(false);
+        });
     }
 
     void setLocation(String url){
@@ -70,7 +113,19 @@ class LayoutController {
         return webView.canGoBack();
     }
 
+    public boolean canGoForward(){
+        return webView.canGoForward();
+    }
+
     public void goBack(){
         if (canGoBack()) webView.goBack();
+    }
+
+    public void goForward(){
+        if (canGoForward()) webView.goForward();
+    }
+
+    public void refresh(){
+        webView.reload();
     }
 }

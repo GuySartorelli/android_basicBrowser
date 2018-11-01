@@ -70,7 +70,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/usr/local/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/alert/ic_error_outline_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/usr/local/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/content/ic_backspace_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -80,8 +80,7 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="ce0000" />
-                            <entry key="outputName" value="error" />
+                            <entry key="outputName" value="delete" />
                             <entry key="sourceFile" value="$USER_HOME$" />
                           </map>
                         </option>

@@ -5,4 +5,9 @@
     <string name="location_input">Type search query or website address</string>
     <string name="location_input_short">Type query or address</string>
     <string name="browse">go</string>
+
+    <string name="forward">Forward</string>
+    <string name="bookmarks">Bookmarks</string>
+    <string name="history">History</string>
+    <string name="refresh">Refresh</string>
 </resources>
