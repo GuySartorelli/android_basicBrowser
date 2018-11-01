@@ -7,17 +7,20 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.CookieManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 class LayoutController {
 
     private AppCompatActivity activity;
     private WebView webView;
     private EditText locationInput;
+    private ProgressBar progressBar;
 
     LayoutController(AppCompatActivity activity) {
         this.activity = activity;
@@ -27,10 +30,12 @@ class LayoutController {
         activity.setContentView(R.layout.activity_main);
         Toolbar toolbar = activity.findViewById(R.id.app_bar);
         activity.setSupportActionBar(toolbar);
+        progressBar = activity.findViewById(R.id.progressBar);
+        setProgressVisibility(false);
 
         webView = activity.findViewById(R.id.web_view);
         webView.setWebViewClient(new BasicBrowserWebViewClient(this));
-//        webView.setWebChromeClient(new WebChromeClient());
+        webView.setWebChromeClient(new BasicBrowserWebChromeClient(this));
         webView.getSettings().setJavaScriptEnabled(true);
         if(Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
             CookieManager.getInstance().setAcceptThirdPartyCookies(webView, true);
@@ -70,15 +75,7 @@ class LayoutController {
                     return false;
                 });
 
-            } else if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1) { //no focus
-                Drawable left = locationInput.getCompoundDrawablesRelative()[0];
-                locationInput.setCompoundDrawablesRelativeWithIntrinsicBounds(left, null, null, null);
-                locationInput.setOnClickListener(null);
-            } else {
-                Drawable left = locationInput.getCompoundDrawables()[0];
-                locationInput.setCompoundDrawablesWithIntrinsicBounds(left, null, null, null);
-                locationInput.setOnClickListener(null);
-            }
+            } else setLocationDrawable(webView.getUrl()); //lost focus
         });
 
         SwipeRefreshLayout swiper = activity.findViewById(R.id.swipeContainer);
@@ -88,9 +85,12 @@ class LayoutController {
         });
     }
 
-    void setLocation(String url){
+    void setLocation(String url) {
         locationInput.setText(url);
+        setLocationDrawable(url);
+    }
 
+    void setLocationDrawable(String url) {
         if (url.startsWith("https://")){
             if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1) {
                 locationInput.setCompoundDrawablesRelativeWithIntrinsicBounds(activity.getResources().getDrawable(R.drawable.secure), null, null, null);
@@ -127,5 +127,13 @@ class LayoutController {
 
     void refresh(){
         webView.reload();
+    }
+
+    void setProgressVisibility(boolean visible) {
+        progressBar.setVisibility(visible ? View.VISIBLE : View.GONE);
+    }
+
+    void setProgress(int progress) {
+        progressBar.setProgress(progress);
     }
 }
