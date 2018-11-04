@@ -41,7 +41,7 @@
                 android:selectAllOnFocus="true"
                 android:textColor="@color/browseText"
                 android:textColorHint="@color/browseHint"
-                android:textSize="10sp" />
+                android:textSize="12sp" />
 
         </android.support.v7.widget.Toolbar>
 
