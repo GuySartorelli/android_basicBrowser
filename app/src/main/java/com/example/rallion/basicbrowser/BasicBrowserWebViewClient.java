@@ -15,16 +15,17 @@ public class BasicBrowserWebViewClient extends WebViewClient {
 
     @Override
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
+        super.onPageStarted(view, url, favicon);
+        layoutController.newPage(url);
         layoutController.setLocation(url);
         layoutController.setProgress(0);
         layoutController.setProgressVisibility(true);
-        super.onPageStarted(view, url, favicon);
     }
 
     @Override
     public void onPageFinished(WebView view, String url) {
-        layoutController.setProgressVisibility(false);
         super.onPageFinished(view, url);
+        layoutController.setProgressVisibility(false);
     }
 
 }

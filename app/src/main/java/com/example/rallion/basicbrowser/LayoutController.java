@@ -1,29 +1,31 @@
 package com.example.rallion.basicbrowser;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.CookieManager;
-import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
 class LayoutController {
 
-    private AppCompatActivity activity;
+    private MainActivity activity;
     private WebView webView;
     private EditText locationInput;
     private ProgressBar progressBar;
 
-    LayoutController(AppCompatActivity activity) {
+    private WebsiteData currentPage;
+
+    LayoutController(MainActivity activity) {
         this.activity = activity;
     }
 
@@ -46,7 +48,7 @@ class LayoutController {
 
         locationInput = activity.findViewById(R.id.location_input);
         locationInput.setOnEditorActionListener((view, actionId, event) -> {
-            webView.loadUrl(URLParser.parse(locationInput.getText().toString()));
+            goTo(locationInput.getText().toString());
             InputMethodManager keyboard = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
             keyboard.hideSoftInputFromWindow(view.getWindowToken(), 0);
             webView.requestFocus();
@@ -54,7 +56,6 @@ class LayoutController {
         });
         locationInput.setOnFocusChangeListener((view, hasFocus) -> {
             if (hasFocus){
-//                locationInput.selectAll();
                 Drawable right;
                 if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1) {
                     Drawable left = activity.getResources().getDrawable(R.drawable.ic_search_black_24dp); //locationInput.getCompoundDrawablesRelative()[0];
@@ -114,6 +115,10 @@ class LayoutController {
         }
     }
 
+    void find(){
+
+    }
+
     boolean canGoBack(){
         return webView.canGoBack();
     }
@@ -140,5 +145,45 @@ class LayoutController {
 
     void setProgress(int progress) {
         progressBar.setProgress(progress);
+    }
+
+    void newPage(String url) {
+        currentPage = new WebsiteData(url);
+    }
+
+    void setPageTitle(String title) {
+        currentPage.setTitle(title);
+    }
+
+//    void setPageIcon(Bitmap icon) {
+//        currentPage.setFavicon(icon);
+//    }
+
+    boolean pageHasTitle() {
+        return !currentPage.getTitle().isEmpty();
+    }
+
+//    boolean pageHasIcon() {
+//        return currentPage.getFavicon() != null;
+//    }
+
+    void savePageInHistory(){
+        currentPage.save(activity.getPreferences());
+    }
+
+    void goTo(String url){
+        webView.loadUrl(URLParser.parse(url));
+    }
+
+    Bundle saveWebView(){
+        Bundle webBundle = new Bundle();
+        webView.saveState(webBundle);
+        return webBundle;
+    }
+
+    void restoreWebView(Bundle webBundle){
+        if (webBundle != null) {
+            webView.restoreState(webBundle);
+        }
     }
 }

@@ -21,26 +21,24 @@
 
             <EditText
                 android:id="@+id/location_input"
-                android:layout_width="300dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="0dp"
-                android:layout_weight="1"
-                android:selectAllOnFocus="true"
                 android:background="@drawable/round_textedit"
                 android:drawableStart="@drawable/ic_search_black_24dp"
                 android:drawableLeft="@drawable/ic_search_black_24dp"
-
                 android:ems="10"
+
                 android:hint="@string/location_input_short"
                 android:imeOptions="actionGo"
                 android:inputType="text|textUri"
                 android:paddingStart="8dp"
                 android:paddingLeft="8dp"
-
                 android:paddingTop="4dp"
+
                 android:paddingEnd="8dp"
                 android:paddingRight="8dp"
                 android:paddingBottom="4dp"
+                android:selectAllOnFocus="true"
                 android:textColor="@color/browseText"
                 android:textColorHint="@color/browseHint" />
 

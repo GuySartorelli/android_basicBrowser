@@ -10,4 +10,7 @@
     <string name="bookmarks">Bookmarks</string>
     <string name="history">History</string>
     <string name="refresh">Refresh</string>
+    <string name="find">Find</string>
+
+    <string name="clear_history">Clear History</string>
 </resources>

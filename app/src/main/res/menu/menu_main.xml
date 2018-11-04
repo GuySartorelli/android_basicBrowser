@@ -15,11 +15,11 @@
                 android:icon="@drawable/forward"
                 android:title="@string/forward"
                 app:showAsAction="always" />
-            <item
+            <!--item
                 android:id="@+id/bookmarks"
                 android:icon="@drawable/bookmarks"
                 android:title="@string/bookmarks"
-                app:showAsAction="always" />
+                app:showAsAction="always" /-->
             <item
                 android:id="@+id/history"
                 android:icon="@drawable/history"
@@ -30,11 +30,16 @@
                 android:icon="@drawable/refresh"
                 android:title="@string/refresh"
                 app:showAsAction="always" />
+            <!--item
+                android:id="@+id/find"
+                android:icon="@drawable/find"
+                android:title="@string/find"
+                app:showAsAction="always" />
             <item
                 android:id="@+id/action_settings"
                 android:orderInCategory="100"
                 android:title="@string/action_settings"
-                app:showAsAction="never" />
+                app:showAsAction="never" /-->
         </menu>
     </item>
 
